@@ -103,17 +103,18 @@ rm *coverage.txt *depth.txt
 # Obtener estadisticas de ensamble
 # --------------------------------
 
-echo -e "ID,Contigs,Largest_contig" > ./estadisticos/Estadisticas_ensamble.csv
+echo -e "ID,Contigs,Largest_contig,Longitud_ensamble" > ./estadisticos/Estadisticas_ensamble.csv
 
 for estadistic in *fa; do
-    ID="$(basename ${estadistic} | cut -d '-' -f '1')"
-    contigs="$(cat ${estadistic} | grep "^>" | wc -l)"
-    largest="$(cat ${estadistic} | sed -n '1p' | cut -d '_' -f '3,4')"
-echo -e "${ID},${contigs},${largest}"
+    ID="$(basename ${estadistic} | cut -d '-' -f '1')" #ID del ensamble
+    contigs="$(cat ${estadistic} | grep "^>" | wc -l)" #Número de contigs
+    largest="$(cat ${estadistic} | sed -n '1p' | cut -d '_' -f '3,4')" #Contig más largo
+    longitud="$(cat ${estadistic} | awk '{seq_length += length($0)} END {print seq_length}')" # Longitud de ensamble
+echo -e "${ID},${contigs},${largest},${longitud}"
 done >> ./estadisticos/Estadisticas_ensamble.csv
 
 # ------------------------
-# Conjuntar ambos archivos
+# Conjuntar estadisticos de ensamble, covertura y longitud
 # ------------------------
 
 
@@ -125,7 +126,7 @@ rm ./estadisticos/CovDep.csv ./estadisticos/Estadisticas_ensamble.csv
 # Obtener archivo global de estadisticas (lecturas y ensamble)
 # ------------------------------------------------------------
 
-paste /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastQC/Bacteria/estadisticos/lecturas_stats.tsv /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastqc_ptrim/Bacterias/estadisticos/lecturas_stats_pt.tsv ./estadisticos/Estadisticos_totales.tsv |  awk '{print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"$8"\t"$9"\t"$11"\t"$12"\t"$13"\t"$14"\t"$15"\t"$16"\t"$17"\t"$18"\t"$20"\t"$21"\t"$22"\t"$23}' > ./estadisticos/Estadistico_global.tsv
+paste /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastQC/Bacteria/estadisticos/lecturas_stats.tsv /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastqc_ptrim/Bacterias/estadisticos/lecturas_stats_pt.tsv ./estadisticos/Estadisticos_totales.tsv |  awk '{print $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"$8"\t"$9"\t"$11"\t"$12"\t"$13"\t"$14"\t"$15"\t"$16"\t"$17"\t"$18"\t"$20"\t"$21"\t"$22"\t"$23"\t"24}' > ./estadisticos/Estadistico_global.tsv
 
 rm ./estadisticos/Estadisticos_totales.tsv
 
