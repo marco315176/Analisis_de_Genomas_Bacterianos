@@ -30,11 +30,11 @@ kraken2 --paired ${R1} ${R2} \
 # Filtra los resultados si en la columna 4 del reporte .txt tiene caracteres G o S (genero o especie) y la columna 3 (fragmentos asignados al taxón) tiene un valor mayor a 1
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-awk '$4 ~ "[DGS]" && $1 >= 0.01' /home/secuenciacion_cenasa/Analisis_corridas/kraken2/bacteria/kraken_${ID}_temp.txt > /home/secuenciacion_cenasa/Analisis_corridas/kraken2/bacteria/kraken_species_${ID}.txt
-awk '$1 >= 0.01' /home/secuenciacion_cenasa/Analisis_corridas/kraken2/bacteria/kraken_${ID}_temp.txt > /home/secuenciacion_cenasa/Analisis_corridas/kraken2/bacteria/kraken_short_${ID}.txt 
+awk '$4 ~ "[GS]" && $1 >= 0.01' /home/secuenciacion_cenasa/Analisis_corridas/kraken2/bacteria/kraken_${ID}_temp.txt > /home/secuenciacion_cenasa/Analisis_corridas/kraken2/bacteria/kraken_species_${ID}.txt
+awk '$1 >= 0.01' /home/secuenciacion_cenasa/Analisis_corridas/kraken2/bacteria/kraken_${ID}_temp.txt > /home/secuenciacion_cenasa/Analisis_corridas/kraken2/bacteria/kraken_final_${ID}.txt 
 # Añadir títulos de columna al reporte .txt
 sed -i '1i coverage%\tcoverage#\tasigned\trank_especie\tNCBItaxonomicID\ttaxonomic_name' /home/secuenciacion_cenasa/Analisis_corridas/kraken2/bacteria/kraken_species_${ID}.txt 
-sed -i '1i coverage%\tcoverage#\tasigned\trank_especie\tNCBItaxonomicID\ttaxonomic_name' /home/secuenciacion_cenasa/Analisis_corridas/kraken2/bacteria/kraken_short_${ID}.txt 
+sed -i '1i coverage%\tcoverage#\tasigned\trank_especie\tNCBItaxonomicID\ttaxonomic_name' /home/secuenciacion_cenasa/Analisis_corridas/kraken2/bacteria/kraken_final_${ID}.txt 
 
 done
 
@@ -50,7 +50,7 @@ for file in *_species_*; do
 
 done >> ./kraken_results_all.tsv
 
-for file in *_short_*; do
+for file in *_final_*; do
     ename="$(basename ${file} | cut -d '_' -f '3')"
     echo -e "\n${ename} \n$(cat ${file})"
 
@@ -58,7 +58,7 @@ done >> ./kraken_results_all_shrt.tsv
 
 rm *_temp*
 rm *species*
-rm *short*
+rm *final*
 
 echo -e "############################"
 echo -e ===== Fin: $(date) =====
