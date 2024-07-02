@@ -15,9 +15,7 @@ mkdir -p FastQC/Lecturas/multiQC
 mkdir -p FastQC/Lecturas_pt/multiQC
 #Mover los archivos generados por FastQC a la carpeta FastQC
 mv /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastQC/Bacteria/*fastqc* ./FastQC/Lecturas
-rm -R /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastQC/Bacteria/*fastqc*
 mv /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastqc_ptrim/Bacterias/*fastqc* ./FastQC/Lecturas_pt
-rm -R /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastqc_ptrim/Bacterias/*fastqc*
 rm -R /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastQC/Bacteria/multiqc/multiqc_data
 mv /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastQC/Bacteria/multiqc/*multiqc* ./FastQC/Lecturas/multiQC
 rm -R /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastqc_ptrim/Bacterias/multiqc/multiqc_data
