@@ -33,6 +33,33 @@ rm -R /home/secuenciacion_cenasa/Analisis_corridas/kmerfinder/bacteria/KF_${ID}
 
 done
 
+# ------------------------------------------------------------------------------------
+# Mover las secuencias a una carpeta nombrada con el genero del organismo identificado
+# ------------------------------------------------------------------------------------
+
+cd /home/secuenciacion_cenasa/Analisis_corridas/kmerfinder/bacteria
+
+
+for file in *spa; do
+    genero=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2,3' | tr ' ' '_')
+    organism=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2,3' | tr ' ' '_')
+    ID=$(basename ${file} | cut -d '_' -f '1')
+
+for assembly in /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/*.fa; do
+    assembly_ID=$(basename ${assembly} | cut -d '-' -f '1')
+
+if [[ ${ID} != ${assembly_ID} ]]; then
+       continue
+ else
+mkdir -p /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/${genero}
+
+echo -e "Moviendo ${assembly} a ${genero}"
+     mv ${assembly} /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/${genero}
+
+        fi
+    done
+done
+
 # -----------------------------------------------------
 # Conjuntar los archivos .txt en uno solo de resultados
 # -----------------------------------------------------
