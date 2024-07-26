@@ -8,9 +8,9 @@ echo -e                                      ===== Inicio: $(date) =====
 
 echo -e "#######################################################################################################"
 
-cd /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial
+cd /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/Escherichia_coli
 
-for assembly in *-SPAdes-assembly*; do
+for assembly in *.fa; do
     ID=$(basename ${assembly} | cut -d '-' -f '1')
 
 # -------------------------------------------------------------------------
@@ -38,20 +38,34 @@ mv /home/secuenciacion_cenasa/Analisis_corridas/serotypefinder/${ID}_tmp_SFout/$
 # Imprimir solo las columnas 1,2,3 y 4 de ${ID}_results_tmp_SF.tsv y quitar el encabezado de las columnas
 # -------------------------------------------------------------------------------------------------------
 
-cat /home/secuenciacion_cenasa/Analisis_corridas/serotypefinder/${ID}_results_tmp_SF.tsv | awk '{print $1,$2,$3,$4}' | sed -e "1d" > /home/secuenciacion_cenasa/Analisis_corridas/serotypefinder/${ID}_results_tmp.tsv
-
-done
+cat /home/secuenciacion_cenasa/Analisis_corridas/serotypefinder/${ID}_results_tmp_SF.tsv | awk '{print $1"\t"$2"\t"$3"\t"$4}' | sed -e "1d" > /home/secuenciacion_cenasa/Analisis_corridas/serotypefinder/${ID}_results_tmp.tsv
 
 # ---------------------------------------------------
 # Concatenar todos los archivos de salida en uno solo
 # ---------------------------------------------------
 
-cd /home/secuenciacion_cenasa/Analisis_corridas/serotypefinder/
+sed -i '1i Database\tGen\tAntigen_prediction\tIdentity' /home/secuenciacion_cenasa/Analisis_corridas/serotypefinder/${ID}_results_tmp.tsv
 
-cat ./${ID}_results_tmp.tsv >> ./SF_tmp_results.tsv
-sed -i '1i Database\tGen\tAntigen_prediction\tIdentity' ./SF_tmp_results.tsv > ./SF_results_all.tsv
+rm -R /home/secuenciacion_cenasa/Analisis_corridas/serotypefinder/*tmp_SFout* /home/secuenciacion_cenasa/Analisis_corridas/serotypefinder/*results_tmp_SF*
 
-rm -R *tmp*
+done
+
+cd /home/secuenciacion_cenasa/Analisis_corridas/serotypefinder
+
+for file in *.tsv; do
+ #   ID=$(basename ${file} | cut -d '_' -f '1')
+
+#echo -e "\n${ID} \n$(cat ${file})"
+
+#done >> ./SF_results_all.tsv 
+
+ ID=$(basename ${file} | cut -d '_' -f '1')
+    echo "${ID}" >> ./SF_results_all.tsv
+    cat "${file}" >> ./SF_results_all.tsv
+    echo "" >> ./SF_results_all.tsv
+
+done
+rm /home/secuenciacion_cenasa/Analisis_corridas/serotypefinder/*results_tmp*
 
 echo -e "############################################################"
 echo -e ===== Fin: $(date) =====

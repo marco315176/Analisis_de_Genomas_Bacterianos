@@ -54,7 +54,7 @@ if [[ ${ID} != ${assembly_ID} ]]; then
 mkdir -p /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/${genero}
 
 echo -e "Moviendo ${assembly} a ${genero}"
-     mv ${assembly} /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/${genero}
+     cp ${assembly} /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/${genero}
 
         fi
     done
@@ -73,4 +73,3 @@ for file in *.spa; do
 done >> ./kmerfinder_results_all.tsv
 
 rm *.txt
-rm *.spa

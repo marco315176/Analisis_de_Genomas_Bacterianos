@@ -8,10 +8,10 @@ echo -e                                   ===== Inicio: $(date) =====
 
 echo -e "###################################################################################################"
 
-cd /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial
+cd /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/Salmonella_enterica
 
 
-for assembly in *-SPAdes-assembly*; do
+for assembly in *.fa; do
     ID=$(basename ${assembly} | cut -d '-' -f '1')
 
 # ----------------------------------------------------------------------

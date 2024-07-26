@@ -1,68 +1,117 @@
 #!/bin/bash
 
-echo -e "####################################################################################"
+echo -e "##################################################################################################"
 
-echo -e ===== Identificación de genes de RAM en ensambles bacterianos con AMRFinderPlus =====
+echo -e ===== Identificación de genes y mutaciones de RAM en ensambles bacterianos con AMRFinderPlus =====
 
-echo -e                           ===== Inicio: $(date) =====
+echo -e                                    ===== Inicio: $(date) =====
 
-echo -e "#####################################################################################"
+echo -e "##################################################################################################"
 
 #Para actualizar la base de datos de AMRFinder: amrfinder -u
-
-cd /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial
-
-
-# ------------------------------------
-# Definir especie y género bacterianos
-# ------------------------------------
-
 #Para conocer la lista de organismos disponibles para la opción --organism: amrfinder -l
 
-for especie in Salmonella Escherichia Campylobacter Enterococcus_faecalis Enterococcus_faecium; do
+
+for especie in Salmonella Escherichia; do
     genero=$(basename ${especie} | cut -d '_' -f '1')
 echo -e "Genero: ${genero}"
 
-# --------------------------------------------------------
-# Loop para cada ensamble de la carpeta donde nos ubicamos
-# --------------------------------------------------------
+for file in /home/secuenciacion_cenasa/Analisis_corridas/kmerfinder/bacteria/*.spa; do
+    gene=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2' | tr ' ' '_')
+    organism=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2,3' | tr ' ' '_')
+    ID_org=$(basename ${file} | cut -d '_' -f '1')
 
-for assembly in *.fa; do
+for assembly in /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/*.fa; do
     ID=$(basename ${assembly} | cut -d '-' -f '1')
 
-# ---------------------------------------------------------------------------------------------------
-# Correr AMRFinderPlus sobre los ensambles obtenidos para la identificación de genes y mutaciones RAM
-# ---------------------------------------------------------------------------------------------------
-
 case ${especie} in Salmonella)
-     if [[ ! -f AMRFinderPlus_tmp_${genero}.tsv ]]; then
+     if [[ ${especie} == ${gene} ]]; then
+echo -e "If control: ${genero} ${gene}"
+    if [[ ${ID_org} == ${ID} ]]; then
+echo -e "If control: ${ID_org} ${ID}"
 
 amrfinder --nucleotide ${assembly} \
           --organism ${especie} \
           --plus \
-          --mutation_all /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_mut_tmp.tsv \
-          --nucleotide_output /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_nuc.fa \
-          --output /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_gen_tmp_amrf.tsv
+          --mutation_all /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_mut_${especie}_temp.tsv \
+          --nucleotide_output /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_nuc_${especie}.fa \
+          --output /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_gen_${especie}_temp.tsv
 
-fi
-esac
+   else
 
-# -------------------------------------------------------------------------------------------------------
-# Filtrar el archivo de resultados de los genes y mutaciones para solo mostrar los genes y mutaciones AMR
-# -------------------------------------------------------------------------------------------------------
+#echo -e "Else control: ${genero} ${gene}"
+#echo -e "Else control: ${ID_org} ${ID}"
 
-cat /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_gen_tmp_amrf.tsv | tr " " "_" | awk '{print $6"\t"$11"\t"$9"\t"$7"\t"$2"\t"$3"\t"$4"\t"$5"\t"$14"\t"$15"\t"$16"\t"$17"\t"$13}' | grep AMR > /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_gen_filt_tmp.tsv
+continue
 
-sed -i '1i Gene_symbol\tClass\tElement_type\tSequence_name\tContig_id\tStart\tStop\tStrand\tTarget_length\tReference_sequence_length\t%_Coverage_of_reference_sequence\t%_Identity_to_reference_sequence\tMethod' /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_gen_filt_tmp.tsv
+     fi
+   fi
+ ;;
 
-cat /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_mut_tmp.tsv | tr " " "_" | awk '{print $6"\t"$11"\t"$12"\t"$7"\t"$2"\t"$9"\t"$10"\t"$16"\t"$17}' | grep AMR > /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_mut_filt_tmp.tsv
+                   Escherichia)
+ if [[ ${especie} == ${gene} ]]; then
+echo -e "If control: ${genero} ${gene}"
+    if [[ ${ID_org} == ${ID} ]]; then
+echo -e "If control: ${ID_org} ${ID}"
 
-sed -i '1i Gene_symbol\tClass\tSubclass\tSequence_name\tContig_id\tElement_type\tElement_subtype\t%_Coverage_of_reference_sequence\t%_Identity_to_reference_sequence' /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_mut_filt_tmp.tsv
+amrfinder --nucleotide ${assembly} \
+          --organism ${especie} \
+          --plus \
+          --mutation_all /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_mut_${especie}_temp.tsv \
+          --nucleotide_output /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_nuc_${especie}.fa \
+          --output /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_gen_${especie}_temp.tsv
 
-done 
+        else
+
+#echo -e "Else control: ${genero} ${gene}"
+#echo -e "Else control: ${ID_org} ${ID}"
+
+continue
+
+         fi
+        fi
+        ;;
+     esac
+
+     done
+  done
 done
 
-rm /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_mut_tmp.tsv /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_gen_tmp_amrf.tsv
+# ---------------------------
+# Eliminar archivos sin peso
+#----------------------------
+
+find /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/ -type f -size 0 -exec rm -f {} \;
+
+# ----------------------------------------------------------------------------------------------------------------
+# Mover los archivos de nucleotidos de las regiones identificadas por AMRFinder de cada muestra a una sola carpeta
+# ----------------------------------------------------------------------------------------------------------------
+
+mkdir -p /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/Nucleotide
+mv /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/*nuc* /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/Nucleotide
+
+# -----------------------------------------------------------------
+# Filtrar los archivos para solo obtener los genes y mutaciones RAM
+# -----------------------------------------------------------------
+
+cd /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/
+
+for genes in ./*_gen_*; do
+    mutaciones=${genes/_gen_/_mut_}
+    ID=$(basename ${genes} | cut -d '_' -f '1')
+    especie=$(basename ${genes} | cut -d '_' -f '3')
+
+cat ${genes} | tr " " "_" | awk '{print $6"\t"$11"\t"$9"\t"$7"\t"$2"\t"$3"\t"$4"\t"$5"\t"$14"\t"$15"\t"$16"\t"$17"\t"$13}' | grep AMR > /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_gen_${especie}_filt_tmp.tsv
+
+sed -i '1i Gene_symbol\tClass\tElement_type\tSequence_name\tContig_id\tStart\tStop\tStrand\tTarget_length\tReference_sequence_length\t%_Coverage_of_reference_sequence\t%_Identity_to_reference_sequence\tMethod' /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_gen_${especie}_filt_tmp.tsv
+
+cat ${mutaciones} | tr " " "_" | awk '{print $6"\t"$11"\t"$12"\t"$7"\t"$2"\t"$9"\t"$10"\t"$16"\t"$17}' | grep AMR > /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_mut_${especie}_filt_tmp.tsv
+
+sed -i '1i Gene_symbol\tClass\tSubclass\tSequence_name\tContig_id\tElement_type\tElement_subtype\t%_Coverage_of_reference_sequence\t%_Identity_to_reference_sequence' /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_mut_${especie}_filt_tmp.tsv
+
+done
+
+rm *temp*
 
 # ---------------------------------------------------------------
 # Conjuntar los archivos de genes y mutaciones en un solo archivo
@@ -70,26 +119,47 @@ rm /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder/${ID}_mut_tmp.tsv /hom
 
 cd /home/secuenciacion_cenasa/Analisis_corridas/AMRFinder
 
-for file in *_gen_filt_*; do 
-    ename=$(basename ${file} | cut -d '_' -f '1')
-echo -e "\n${ename} \n$(cat ${file})"
+for file in /home/secuenciacion_cenasa/Analisis_corridas/kmerfinder/bacteria/*.spa; do
+    gene=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2' | tr ' ' '_')
+    organism=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2,3' | tr ' ' '_')
+    ID_org=$(basename ${file} | cut -d '_' -f '1')
 
-done >> ./GenesAMRF_all.tsv
+for gen in ./*_gen_*; do
+    ename=$(basename ${gen} | cut -d '_' -f '1')
+    spg=$(basename ${gen} | cut -d '_' -f '3')
 
-for file in *mut_filt*; do
-    ename=$(basename ${file} | cut -d '_' -f '1')
-echo -e "\n${ename} \n$(cat ${file})"
+ if [[ ${gene} == ${spg} ]]; then
+echo -e "\n${ename} \n$(cat ${gen})"
 
-done >> ./MutacionesAMRF_all.tsv
+        else
+  continue
+fi
+   done >> ./GenesAMRF_${gene}_all.tsv
+done
+#####
+for file in /home/secuenciacion_cenasa/Analisis_corridas/kmerfinder/bacteria/*.spa; do
+    gene=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2' | tr ' ' '_')
+    organism=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2,3' | tr ' ' '_')
+    ID_org=$(basename ${file} | cut -d '_' -f '1')
 
-# ----------------------------------------------------------------------------------------------------------------
-# Mover los archivos de nucleotidos de las regiones identificadas por AMRFinder de cada muestra a una sola carpeta
-# ----------------------------------------------------------------------------------------------------------------
 
-mkdir -p Nucleotide
-mv *nuc* ./Nucleotide
+for mut in ./*_mut_*; do
+    ename=$(basename ${mut} | cut -d '_' -f '1')
+    spm=$(basename ${mut} | cut -d '_' -f '3')
+
+if [[ ${gene} == ${spm} ]]; then
+echo -e "\n${ename} \n$(cat ${mut})"
+
+         else
+  continue
+fi
+    done >> ./MutacionesAMRF_${gene}_all.tsv
+done
+
 rm *tmp*
+rm /home/secuenciacion_cenasa/Analisis_corridas/kmerfinder/bacteria/*.spa
 
 echo -e "#########################################"
 echo -e         ===== Fin: $(date) =====
 echo -e "#########################################"
+
