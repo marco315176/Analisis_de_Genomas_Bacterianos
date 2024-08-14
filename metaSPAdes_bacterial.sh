@@ -1,12 +1,12 @@
 #!/bin/bash
 
-echo -e "#############################################################"
+echo -e "#############################################################" "\n"
 
-echo -e ======= Ensamble de genomas bacterianos con metaSPAdes =======
+echo -e ======= Ensamble de genomas bacterianos con metaSPAdes ======= "\n"
 
-echo -e                 ===== Inicio: $(date) =====
+echo -e                 ===== Inicio: $(date) ===== "\n"
 
-echo -e "##############################################################"
+echo -e "##############################################################" "\n"
 
 # -------------------------------------------------------------------
 # Cámbio de directorio a donde se encuentran las lecturas postrimming

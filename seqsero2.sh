@@ -1,14 +1,14 @@
 #!/bin/bash
 
-echo -e "###################################################################################################"
+echo -e "###################################################################################################" "\n"
 
-echo -e ===== Ejecución de SeqSero2 sobre ensambles para la ideantificación de serotipos de Salmonella =====
+echo -e ===== Ejecución de SeqSero2 sobre ensambles para la ideantificación de serotipos de Salmonella ===== "\n"
 
-echo -e                                   ===== Inicio: $(date) =====
+echo -e                                   ===== Inicio: $(date) ===== "\n"
 
-echo -e "###################################################################################################"
+echo -e "###################################################################################################" "\n"
 
-cd /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/Salmonella_enterica
+cd /home/secuenciacion_cenasa/Analisis_corridas/Resultados_all_bacteria/Ensambles/Salmonella_enterica
 
 
 for assembly in *.fa; do

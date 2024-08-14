@@ -1,12 +1,12 @@
 #!/bin/bash
 
-echo -e "##################################################################################################"
+echo -e "##################################################################################################" "\n"
 
-echo -e ===== Identificación de genes y mutaciones de RAM en ensambles bacterianos con AMRFinderPlus =====
+echo -e ===== Identificación de genes y mutaciones de RAM en ensambles bacterianos con AMRFinderPlus ===== "\n"
 
-echo -e                                    ===== Inicio: $(date) =====
+echo -e                                    ===== Inicio: $(date) ===== "\n"
 
-echo -e "##################################################################################################"
+echo -e "##################################################################################################" "\n"
 
 #Para actualizar la base de datos de AMRFinder: amrfinder -u
 #Para conocer la lista de organismos disponibles para la opción --organism: amrfinder -l

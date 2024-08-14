@@ -1,13 +1,13 @@
 #!/bin/bash
 
 
-echo -e "###############################################################################################"
+echo -e "###############################################################################################" "\n"
 
-echo -e ============= Estadísticos de lecturas de archivos fastQ.gz de corridas bacterianas ================
+echo -e ============= Estadísticos de lecturas de archivos fastQ.gz de corridas bacterianas ================ "\n"
 
-echo -e                              ===== Inicio: $(date) =====
+echo -e                              ===== Inicio: $(date) ===== "\n"
 
-echo -e "###############################################################################################"
+echo -e "###############################################################################################" "\n"
 
 cd /home/secuenciacion_cenasa/Analisis_corridas/Corrida_bacterias
 

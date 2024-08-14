@@ -1,10 +1,10 @@
 #!/bin/bash
 
-echo -e "#####################################################################"
+echo -e "#####################################################################" "\n"
 
-echo -e Moviendo todos los archivos de resultados obtenidos a una sola carpeta
+echo -e Moviendo todos los archivos de resultados obtenidos a una sola carpeta "\n"
 
-echo -e "#####################################################################"
+echo -e "#####################################################################" "\n"
 
 cd /home/secuenciacion_cenasa/Analisis_corridas/Resultados_all_bacteria
 
@@ -18,19 +18,20 @@ mv /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastQC/Bacteria/*fast
 mv /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastqc_ptrim/Bacterias/*fastqc* ./FastQC/Lecturas_pt
 rm -R /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastQC/Bacteria/multiqc/multiqc_data
 mv /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastQC/Bacteria/multiqc/*multiqc* ./FastQC/Lecturas/multiQC
+mv /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastqc_ptrim/Bacterias/multiqc/postrimm_multiqc* ./FastQC/Lecturas_pt/multiQC
 rm -R /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastqc_ptrim/Bacterias/multiqc/multiqc_data
 
-mkdir -p Archivos_trimming
+#mkdir -p Archivos_trimming
 #Mover los archivos limpios (trimming) a la carpeta Archivos_trimming
-mv /home/secuenciacion_cenasa/Analisis_corridas/Archivos_postrim/Bacterias/*_trim* ./Archivos_trimming
+#mv /home/secuenciacion_cenasa/Analisis_corridas/Archivos_postrim/Bacterias/*_trim* ./Archivos_trimming
 
-mkdir -p Ensambles
+#mkdir -p Ensambles
 #Mover todos los ensambles a la carpeta Ensambles
-mv /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/*SPAdes* ./Ensambles
+#mv /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/*SPAdes* ./Ensambles
 
-#mkdir -p KRAKEN2
+mkdir -p KRAKEN2
 #Mover los archivos obtenidos por KRAKEN2 a la carpeta KRAKEN2
-#mv /home/secuenciacion_cenasa/Analisis_corridas/kraken2/virus/*kraken* ./KRAKEN2
+mv /home/secuenciacion_cenasa/Analisis_corridas/kraken2/virus/*kraken* ./KRAKEN2
 
 mkdir -p KmerFinder
 #Mover los resultados obtenidos por KmerFinder a la carpeta KmerFinder
@@ -39,6 +40,7 @@ mv /home/secuenciacion_cenasa/Analisis_corridas/kmerfinder/bacteria/*results* ./
 mkdir -p MLST
 #Mover los resultados obtenidos por stringMLST a la carpeta MLST
 mv /home/secuenciacion_cenasa/Analisis_corridas/stringMLST/*MLST* ./MLST
+mv /home/secuenciacion_cenasa/Analisis_corridas/MLST/MLST* ./MLST
 
 mkdir -p SeqSero2
 #Mover los resultados obtenidos por SeqSero2 a la carpeta nombrada igualmente
@@ -58,3 +60,6 @@ mkdir -p Estadisticos
 mv /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastQC/Bacteria/estadisticos/*stats* ./Estadisticos
 mv /home/secuenciacion_cenasa/Analisis_corridas/Resultados_fastqc_ptrim/Bacterias/estadisticos/*stats_pt* ./Estadisticos
 mv /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/estadisticos/*global* ./Estadisticos 
+
+rm /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/*fa
+rm -R /home/secuenciacion_cenasa/Analisis_corridas/Archivos_postrim/Bacterias/*

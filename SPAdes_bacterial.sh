@@ -1,12 +1,12 @@
 #!/bin/bash
 
-echo -e "#############################################################"
+echo -e "#############################################################" "\n"
 
-echo -e ======= Ensamble de genomas bacterianos con SPAdes =======
+echo -e ======= Ensamble de genomas bacterianos con SPAdes ======= "\n"
 
-echo -e                 ===== Inicio: $(date) =====
+echo -e                 ===== Inicio: $(date) ===== "\n"
 
-echo -e "##############################################################"
+echo -e "##############################################################" "\n"
 
 # -------------------------------------------------------------------
 # Cámbio de directorio a donde se encuentran las lecturas postrimming
@@ -39,7 +39,7 @@ rm -R /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/${ID}_SPAdes
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-seqtk seq -L 500 /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/${ID}-SPAdes-assembly.fasta > /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/${ID}-SPAdes-assembly.fa
+seqtk seq -L 100 /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/${ID}-SPAdes-assembly.fasta > /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/${ID}-SPAdes-assembly.fa
 
 chmod -R 775 /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/${ID}-SPAdes-assembly.fa
 

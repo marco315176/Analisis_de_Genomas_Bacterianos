@@ -1,12 +1,12 @@
 #!/bin/bash
 
-echo -e "##########################################################################################"
+echo -e "##########################################################################################" "\n"
 
-echo -e ===== Script para obtener el MLST sobre lecturas de diferentes géneros bacterianos =====
+echo -e ===== Script para obtener el MLST sobre lecturas de diferentes géneros bacterianos ===== "\n"
 
-echo -e                                ===== Inicio: $(date) =====
+echo -e                                ===== Inicio: $(date) ===== "\n"
 
-echo -e "##########################################################################################"
+echo -e "##########################################################################################" "\n"
 
 cd /home/secuenciacion_cenasa/Analisis_corridas/Archivos_postrim/Bacterias
 

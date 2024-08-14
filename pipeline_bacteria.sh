@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo -e "#################################################################################"
-echo -e ===== Iniciando pipeline para análisis de genomas de aisamientos bacterianos =====
-echo -e ===== Inicio del pipeine: $(date) =====
-echo -e "#################################################################################"
+echo -e "#################################################################################" "\n"
+echo -e ===== Iniciando pipeline para análisis de genomas de aisamientos bacterianos ===== "\n"
+echo -e ===== Inicio del pipeine: $(date) ===== "\n"
+echo -e "#################################################################################" "\n"
 
 # ---------------------------------------------------------------------------------------------------------
 # Script para obtener estadisticos de lecturas crudas, reaizar trimming y obtener estadisticos pos-trimming
@@ -33,6 +33,8 @@ bash kmerfinder_bacteria.sh
 
 bash stringMLST.sh
 
+bash MLST.sh
+
 bash seqsero2.sh
 
 bash serotypefinder.sh
@@ -47,7 +49,7 @@ bash AMRFinder.sh
 # Script para mover todos los archivos de resultados a una sola carpeta
 # ---------------------------------------------------------------------
 
-bash results_bacteria.sh
+#bash results_bacteria.sh
 
 echo -e "##############################################################################################"
 echo -e ===== Pipeline de análisis de genomas bacterianos completado: $(date) =====

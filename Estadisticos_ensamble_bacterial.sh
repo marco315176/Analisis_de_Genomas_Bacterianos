@@ -1,12 +1,12 @@
 #!/bin/bash
 
-echo -e "########################################################################"
+echo -e "########################################################################" "\n"
 
-echo -e ===== Evaluación de estadisticos de los ensambles de Bacterias obtenidos =====
+echo -e ===== Evaluación de estadisticos de los ensambles de Bacterias obtenidos ===== "\n"
 
-echo -e ===========             Inicio: $(date)               ===========
+echo -e =========== Inicio: $(date) =========== "\n"
 
-echo -e "#########################################################################"
+echo -e "#########################################################################" "\n"
 
 cd /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial
 

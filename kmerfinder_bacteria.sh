@@ -1,12 +1,12 @@
 #!/bin/bash
 
-echo -e "###########################################################################################################################"
+echo -e "########################################################################################################################" "\n"
 
-echo -e === Ejecutar kmerfinder sobre ensambles obtenidos con metaSPAdes o SPAdes para la identificación taxonómica de bacterias === 
+echo -e === Ejecutar kmerfinder sobre ensambles obtenidos con SPAdes para la identificación taxonómica de bacterias === "\n"
 
-echo -e                                        ===== Inicio: $(date) =====
+echo -e                                        ===== Inicio: $(date) ===== "\n"
 
-echo -e "############################################################################################################################"
+echo -e "#########################################################################################################################" "\n"
 
 cd /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial
 
@@ -34,7 +34,7 @@ rm -R /home/secuenciacion_cenasa/Analisis_corridas/kmerfinder/bacteria/KF_${ID}
 done
 
 # ------------------------------------------------------------------------------------
-# Mover las secuencias a una carpeta nombrada con el genero del organismo identificado
+# Mover los ensambles a una carpeta nombrada con el genero del organismo identificado
 # ------------------------------------------------------------------------------------
 
 cd /home/secuenciacion_cenasa/Analisis_corridas/kmerfinder/bacteria
@@ -51,17 +51,47 @@ for assembly in /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/*.
 if [[ ${ID} != ${assembly_ID} ]]; then
        continue
  else
-mkdir -p /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/${genero}
+
+mkdir -p /home/secuenciacion_cenasa/Analisis_corridas/Resultados_all_bacteria/Ensambles/${genero}
 
 echo -e "Moviendo ${assembly} a ${genero}"
-     cp ${assembly} /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/${genero}
+     cp ${assembly} /home/secuenciacion_cenasa/Analisis_corridas/Resultados_all_bacteria/Ensambles/${genero}
+
 
         fi
     done
 done
 
+# ------------------------------------------------------------------------------------
+# Mover los archivos trimmiados a una carpeta nombrada con el genero del organismo identificado
+# ------------------------------------------------------------------------------------
+
+cd /home/secuenciacion_cenasa/Analisis_corridas/kmerfinder/bacteria
+
+
+for file in *spa; do
+    genero=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2,3' | tr ' ' '_')
+    organism=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2,3' | tr ' ' '_')
+    ID=$(basename ${file} | cut -d '_' -f '1')
+
+for trim in /home/secuenciacion_cenasa/Analisis_corridas/Archivos_postrim/Bacterias/*fastq.gz; do
+    trim_ID=$(basename ${trim} | cut -d '_' -f '1')
+
+if [[ ${ID} != ${trim_ID} ]]; then
+       continue
+ else
+mkdir -p /home/secuenciacion_cenasa/Analisis_corridas/Resultados_all_bacteria/Archivos_trimming/${genero}
+
+echo -e "Moviendo ${trim} a ${genero}"
+     cp ${trim} /home/secuenciacion_cenasa/Analisis_corridas/Resultados_all_bacteria/Archivos_trimming/${genero}
+
+        fi
+    done
+done
+
+
 # -----------------------------------------------------
-# Conjuntar los archivos .txt en uno solo de resultados
+# Conjuntar los archivos .spa en uno solo de resultados
 # -----------------------------------------------------
 
 cd /home/secuenciacion_cenasa/Analisis_corridas/kmerfinder/bacteria

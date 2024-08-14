@@ -1,14 +1,14 @@
 #!/bin/bash
 
-echo -e "#######################################################################################################"
+echo -e "#######################################################################################################" "\n"
 
-echo -e =====  Ejecución de SerotypeFinder sobre ensambles para la ideantificación de serotipos de E. coli =====
+echo -e =====  Ejecución de SerotypeFinder sobre ensambles para la ideantificación de serotipos de E. coli ===== "\n"
 
-echo -e                                      ===== Inicio: $(date) =====
+echo -e                                      ===== Inicio: $(date) ===== "\n"
 
-echo -e "#######################################################################################################"
+echo -e "#######################################################################################################" "\n"
 
-cd /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial/Escherichia_coli
+cd /home/secuenciacion_cenasa/Analisis_corridas/Resultados_all_bacteria/Ensambles/Escherichia_coli
 
 for assembly in *.fa; do
     ID=$(basename ${assembly} | cut -d '-' -f '1')
@@ -52,19 +52,19 @@ done
 
 cd /home/secuenciacion_cenasa/Analisis_corridas/serotypefinder
 
-for file in *.tsv; do
- #   ID=$(basename ${file} | cut -d '_' -f '1')
+for file in *results_tmp*; do
+    ID=$(basename ${file} | cut -d '_' -f '1')
 
-#echo -e "\n${ID} \n$(cat ${file})"
+echo -e "\n${ID} \n$(cat ${file})"
 
-#done >> ./SF_results_all.tsv 
+done >> ./SF_results_all.tsv 
 
- ID=$(basename ${file} | cut -d '_' -f '1')
-    echo "${ID}" >> ./SF_results_all.tsv
-    cat "${file}" >> ./SF_results_all.tsv
-    echo "" >> ./SF_results_all.tsv
+# ID=$(basename ${file} | cut -d '_' -f '1')
+ #   echo "${ID}" >> ./SF_results_all.tsv
+  #  cat "${file}" >> ./SF_results_all.tsv
+   # echo "" >> ./SF_results_all.tsv
 
-done
+#done
 rm /home/secuenciacion_cenasa/Analisis_corridas/serotypefinder/*results_tmp*
 
 echo -e "############################################################"
