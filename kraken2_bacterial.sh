@@ -19,7 +19,7 @@ for R1 in *_R1_*; do
 # Ejecutar kraken2 sobre las lecturas postrim
 # -------------------------------------------
 
-kraken2 --paired ${R1} ${R2} --gzip-compressed --db $KRAKEN2_DB_PATH --use-names --report /home/secuenciacion_cenasa/Analisis_corridas/kraken2/bacteria/${ID}_kraken2_temp.txt --memory-mapping
+kraken2 --paired ${R1} ${R2} --gzip-compressed --db $KRAKEN2_DB_PATH --use-names --threads 6 --report /home/secuenciacion_cenasa/Analisis_corridas/kraken2/bacteria/${ID}_kraken2_temp.txt --memory-mapping
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Filtra los resultados si en la columna 4 del reporte .txt tiene caracteres G o S (genero o especie) y la columna 3 (fragmentos asignados al taxón) tiene un valor mayor a 1
@@ -41,16 +41,15 @@ done
 
 cd /home/secuenciacion_cenasa/Analisis_corridas/kraken2/bacteria
 
-for file in *kraken2*; do
-    ID=$(basename ${file} | cut -d '_' -f '1')
+for kraken in *kraken2_temp*; do
+    ID=$(basename ${kraken} | cut -d '_' -f '1')
 
-ktImportText ${file} -o /home/secuenciacion_cenasa/Analisis_corridas/kraken2/virus/${ID}_kraken2_krona.html
+ktImportTaxonomy -m 3 -t 5 ${kraken} -o ./${ID}_kraken2_krona.html
 
 done
 
 rm /home/secuenciacion_cenasa/Analisis_corridas/kraken2/bacteria/*kraken2_temp.txt
 
-
-echo -e "###########################################"
-echo -e ===== Fin: $(date) =====
-echo -e "###########################################"
+echo -e "###########################################" "\n"
+echo -e ===== Fin: $(date) =====    "\n"
+echo -e "###########################################" "\n"
