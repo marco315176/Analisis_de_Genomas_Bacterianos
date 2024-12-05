@@ -24,7 +24,7 @@ for R1 in *_R1_* ; do
 
 spades.py   --isolate -1 ${R1} \
                       -2 ${R2} \
-           -t 20 -o /home/admcenasa/Analisis_corridas/SPAdes/bacteria/${ID}_SPAdes
+           -t 15 -o /home/admcenasa/Analisis_corridas/SPAdes/bacteria/${ID}_SPAdes
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------
 # Cámbio de nombre del archivo "contigs.fasta" a "${ID}-SPAdes-assembly.fasta" y elimina el directorio "${ID}_SPAdes" con los archivos no necesarios

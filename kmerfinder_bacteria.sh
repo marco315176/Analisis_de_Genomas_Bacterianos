@@ -96,7 +96,7 @@ cd /home/admcenasa/Analisis_corridas/kmerfinder/bacteria
 
 for file in *.spa; do
     ename="$(basename ${file} | cut -d '_' -f '1')"
-    echo -e "\n ########## \t${ename} \t ########## \n$(cat ${file})"
+    echo -e "\n ########## ${ename} ########## \n$(cat ${file})"
 
 done >> ./kmerfinder_results_all.tsv
 

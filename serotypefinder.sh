@@ -8,9 +8,9 @@ echo -e                                      ===== Inicio: $(date) ===== "\n"
 
 echo -e "#####################################################################################################" "\n"
 
-cd /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial
+cd /home/admcenasa/Analisis_corridas/SPAdes/bacteria
 
-for file in /home/secuenciacion_cenasa/Analisis_corridas/kmerfinder/bacteria/*.spa; do
+for file in /home/admcenasa/Analisis_corridas/kmerfinder/bacteria/*.spa; do
     gene=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2' | tr ' ' '_')
     organism=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2,3' | tr ' ' '_')
     ID_org=$(basename ${file} | cut -d '_' -f '1')
@@ -37,7 +37,7 @@ echo -e "########################################" "\n"
 # Correr SerotypeFinder sobre los ensambles de E. coli obtenidos con SPAdes
 # -------------------------------------------------------------------------
 
-dir="/home/secuenciacion_cenasa/Analisis_corridas/serotypefinder"
+dir="/home/admcenasa/Analisis_corridas/serotypefinder"
 
 mkdir -p ${dir}/${ID}_tmp_SFout
 

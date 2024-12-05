@@ -35,7 +35,7 @@ cd /home/admcenasa/Analisis_corridas/Corrida_bacterias
 # Ejecuta Trim_Galore para realizar el proceso de trimming sobre lecturas y ejecuta fastqc postrimming
 # ---------------------------------------------------------------------------------------------------
 
-trim_galore --quality 30 --length 70 --paired  -j 15 *.gz --fastqc_args "--extract --outdir /home/admcenasa/Analisis_corridas/fastQC_ptrim/bacteria" --output_dir /home/admcenasa/Analisis_corridas/Archivos_postrim/bacteria
+trim_galore --quality 30 --length 70 --paired  -j 7 *.gz --fastqc_args "--extract --outdir /home/admcenasa/Analisis_corridas/fastQC_ptrim/bacteria" --output_dir /home/admcenasa/Analisis_corridas/Archivos_postrim/bacteria
 
 cd /home/admcenasa/Analisis_corridas/Archivos_postrim/bacteria
 

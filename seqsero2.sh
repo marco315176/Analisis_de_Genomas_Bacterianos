@@ -8,9 +8,9 @@ echo -e                                   ===== Inicio: $(date) ===== "\n"
 
 echo -e "###################################################################################################" "\n"
 
-cd /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial
+cd /home/admcenasa/Analisis_corridas/SPAdes/bacteria
 
-for file in /home/secuenciacion_cenasa/Analisis_corridas/kmerfinder/bacteria/*.spa; do
+for file in /home/admcenasa/Analisis_corridas/kmerfinder/bacteria/*.spa; do
     gene=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2' | tr ' ' '_')
     organism=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2,3' | tr ' ' '_')
     ID_org=$(basename ${file} | cut -d '_' -f '1')
@@ -36,7 +36,7 @@ echo -e "###################################" "\n"
 # ----------------------------------------------------------------------
 # Correr SeqSero2 sobre los ensambles de Salmonella obtenidos con SPAdes
 # ----------------------------------------------------------------------
-dir="/home/secuenciacion_cenasa/Analisis_corridas/seqsero2"
+dir="/home/admcenasa/Analisis_corridas/seqsero2"
 
 SeqSero2_package.py -t 4 \
                     -i ${assembly} \

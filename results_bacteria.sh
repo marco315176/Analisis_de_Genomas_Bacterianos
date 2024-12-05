@@ -1,10 +1,10 @@
 #!/bin/bash
 
-echo -e "#####################################################################" "\n"
+echo -e "################################################################################################################" "\n"
 
-echo -e Moviendo todos los archivos de resultados obtenidos a una sola carpeta "\n"
+echo -e Moviendo todos los archivos de resultados obtenidos a: /home/admcenasa/Analisis_corridas/Resultados_all_bacteria "\n"
 
-echo -e "#####################################################################" "\n"
+echo -e "################################################################################################################" "\n"
 
 cd /home/admcenasa/Analisis_corridas/Resultados_all_bacteria
 
@@ -52,13 +52,16 @@ mv /home/admcenasa/Analisis_corridas/serotypefinder/*results* ./SerotypeFinder
 
 mkdir -p RAM
 #Mover los resultados obtenidos por AMRFinderPlus a la carpeta RAM
-mv /home/admcenasa/Analisis_corridas/resfinder/* ./RAM
+mv /home/admcenasa/Analisis_corridas/AMRFinder/* ./RAM
 
 mkdir -p Estadisticos
 #Mover archivos con estadisticos
 mv /home/admcenasa/Analisis_corridas/fastQC/bacteria/estadisticos/*stats* ./Estadisticos
 mv /home/admcenasa/Analisis_corridas/fastQC_ptrim/bacteria/estadisticos/*stats_pt* ./Estadisticos
 mv /home/admcenasa/Analisis_corridas/SPAdes/bacteria/estadisticos/*global* ./Estadisticos 
+
+mkdir -p Lecturas_crudas
+mv /home/admcenasa/Analisis_corridas/Corrida_bacterias/*fastq.gz ./Lecturas_crudas
 
 rm /home/admcenasa/Analisis_corridas/SPAdes/bacteria/*fa
 rm -R /home/admcenasa/Analisis_corridas/Archivos_postrim/bacteria/*
