@@ -29,8 +29,6 @@ if [[ ${gene} != "Salmonella" ]]; then
 continue
 	else
 
-#mkdir -p /home/secuenciacion_cenasa/Analisis_corridas/Resultados_all_bacteria/SeqSero2
-
 echo -e "${ID} encontrado como ${gene}" "\n"
 echo -e "###################################"
 echo -e "Corriendo SeqSero2 sobre: ${ID}"
@@ -74,6 +72,10 @@ cat ${dir}/${ID}_tmp_filt.tsv >> ${dir}/SeqSero2_tmp_filt.tsv | uniq
 	fi
     done
 done
+
+# --------------------------------------------------------------------------------------------------------------------------
+# Modificar archivo final y crear la carpeta de resultados finales en caso de que la carpeta log y el archivo SeqSero2_result_filt.tsv existan
+# ---------------------------------------------------------------------------------------------------------------------------
 
 cd /home/secuenciacion_cenasa/Analisis_corridas/seqsero2
 

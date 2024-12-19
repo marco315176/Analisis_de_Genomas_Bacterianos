@@ -8,9 +8,9 @@ echo -e                                      ===== Inicio: $(date) ===== "\n"
 
 echo -e "#####################################################################################################" "\n"
 
-cd /home/admcenasa/Analisis_corridas/SPAdes/bacteria
+cd /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial
 
-for file in /home/admcenasa/Analisis_corridas/kmerfinder/bacteria/*.spa; do
+for file in /home/secuenciacion_cenasa/Analisis_corridas/kmerfinder/bacteria/*.spa; do
     gene=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2' | tr ' ' '_')
     organism=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2,3' | tr ' ' '_')
     ID_org=$(basename ${file} | cut -d '_' -f '1')
@@ -25,10 +25,10 @@ for assembly in *.fa; do
 if [[ ${ID} == ${ID_org} ]]; then
         echo -e "If control: ${ID} ${ID_org}"
 if [[ ${organism} != "Escherichia_coli" ]]; then
-        echo -e "${ID} encontrado como ${organism}, no encontrado como Escherichia_coli"
+        echo -e " ---------- ${ID} encontrado como ${organism}, no encontrado como Escherichia_coli ----------"
 continue
         else
-echo -e "${ID} encontrado como ${organism}" "\n"
+echo -e " ********** ${ID} encontrado como ${organism} **********" "\n"
 echo -e "########################################"
 echo -e "Corriendo SerotypeFinder sobre: ${ID}"
 echo -e "########################################" "\n"
@@ -37,7 +37,7 @@ echo -e "########################################" "\n"
 # Correr SerotypeFinder sobre los ensambles de E. coli obtenidos con SPAdes
 # -------------------------------------------------------------------------
 
-dir="/home/admcenasa/Analisis_corridas/serotypefinder"
+dir="/home/secuenciacion_cenasa/Analisis_corridas/serotypefinder"
 
 mkdir -p ${dir}/${ID}_tmp_SFout
 
@@ -65,26 +65,35 @@ cat ${dir}/${ID}_results_tmp_SF.tsv | awk '{print $1"\t"$2"\t"$3"\t"$4}' | sed -
 # ---------------------------------------------------
 
 sed -i '1i Database\tGen\tAntigen_prediction\tIdentity' ${dir}/${ID}_results_tmp.tsv
+#cat ${dir}/${ID}_results_tmp.tsv >> ${dir}/SF_results_all.tsv
+#rm -R ${dir}/*tmp*
 
-rm -R ${dir}/*tmp_SFout* ${dir}/*results_tmp_SF*
+for SF in ${dir}/*results_tmp.tsv; do
+    ID=$(basename ${SF} | cut -d '_' -f '1')
+echo -e "\n ########## \t ${ID} \t ########## \n $(cat ${SF})"
+done >> ${dir}/SF_results_all.tsv
 
 	  fi
 	fi
     done
 done
 
-cd ${dir}
+# ---------------------------------------------------------------------------------------
+# Crear carpeta de resultados finales en caso de que el archivo SF_results_all.tsv exista
+# ---------------------------------------------------------------------------------------
 
-for file in *results_tmp*; do
-    ID=$(basename ${file} | cut -d '_' -f '1')
+cd /home/secuenciacion_cenasa/Analisis_corridas/serotypefinder
 
-echo -e "\n ########## \t${ID}\t ########## \n$(cat ${file})"
+if [[ -f ./SF_results_all.tsv ]]; then
+mkdir -p /home/secuenciacion_cenasa/Analisis_corridas/Resultados_all_bacteria/SerotypeFinder
 
-done >> ./SF_results_all.tsv 
+rm -R ./*tmp*
 
+mv ./SF_results_all.tsv /home/secuenciacion_cenasa/Analisis_corridas/Resultados_all_bacteria/SerotypeFinder/
 
-rm ${dir}/*results_tmp*
+	fi
 
-echo -e "############################################################"
-echo -e                     ===== Fin: $(date) =====
-echo -e "############################################################"
+echo -e "#########################################################################################" "\n"
+echo -e  =============== Identificación de formula antigénica de E.coli terminado  =============== "\n"
+echo -e  =============== Fin: $(date) =============== "\n"
+echo -e "#########################################################################################" "\n"
