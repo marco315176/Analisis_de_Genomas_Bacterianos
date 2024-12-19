@@ -65,8 +65,6 @@ cat ${dir}/${ID}_results_tmp_SF.tsv | awk '{print $1"\t"$2"\t"$3"\t"$4}' | sed -
 # ---------------------------------------------------
 
 sed -i '1i Database\tGen\tAntigen_prediction\tIdentity' ${dir}/${ID}_results_tmp.tsv
-#cat ${dir}/${ID}_results_tmp.tsv >> ${dir}/SF_results_all.tsv
-#rm -R ${dir}/*tmp*
 
 for SF in ${dir}/*results_tmp.tsv; do
     ID=$(basename ${SF} | cut -d '_' -f '1')
