@@ -148,7 +148,7 @@ else
                          Mycobacteria_spp)
     if [[ ${ID_org} == ${ID} ]]; then
                                      echo -e "If control: ${ID_org} ${ID}"
-    if [[ ${gene} != "Mycobacteria" ]]; then
+    if [[ ${gene} != "Mycobacterium" ]]; then
 continue
         else
      if [[ ! -f stringMLST_temp_${especie}.tsv ]]; then
