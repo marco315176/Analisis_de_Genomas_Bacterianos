@@ -27,13 +27,13 @@ for R1 in *_R1_*fastq.gz; do
 if [[ ${ID_org} == ${ID_R1} && ${ID_R2} ]]; then
         echo -e "If control: Reads: ${ID_R1} ${ID_R2} Ensamble: ${ID_org}"
 if [[ ${gene} != "Mycobacterium" ]]; then
-        echo -e " ---------- ${ID} encontrado como ${organism}, no encontrado como Mycobacterium ----------"
+        echo -e " ---------- ${ID_R1} encontrado como ${organism}, no encontrado como Mycobacterium ----------"
 continue
         else
 
-echo -e "********** ${ID} encontrado como ${organism} **********" "\n"
+echo -e "\t" "********** ${ID_R1} encontrado como ${organism} **********" "\n"
 echo -e "###################################"
-echo -e "Corriendo vSNP3 sobre: ${ID}"
+echo -e "Corriendo vSNP3 sobre: ${ID_R1}"
 echo -e "###################################" "\n"
 
 # ----------------------------------------------------
@@ -41,20 +41,19 @@ echo -e "###################################" "\n"
 # ----------------------------------------------------
 dir="/home/admcenasa/Analisis_corridas/vSNP3"
 
-vsnp3_step1.py -r1 ${R1} -r2 ${R2} \
-	       -t /home/admcenasa/Programas_bioinformaticos/vSNP3/dependencies/Mycobacterium_AF2122 --spoligo \
-	       -o ${dir}/${ID}_spoligo_vsnp3
+vsnp3_step1.py -r1 ${R1} -r2 ${R2} -t /home/admcenasa/Programas_bioinformaticos/vSNP3/dependencies/Mycobacterium_AF2122 --spoligo -o ${dir}/${ID_R1}_spoligo_vsnp3
 
-ssconvert ${dir}/${ID}_spoligo_vsnp3/*.xlsx ${dir}/${ID}_spoligo_vsnp3/${ID}_vSNP_spoligo.csv
+xlsx2csv -d "\t" ${dir}/${ID_R1}_spoligo_vsnp3/*.xlsx  ${dir}/${ID_R1}_spoligo_vsnp3/${ID_R1}_spoligo_vSNP3_tmp.tsv
+cat ${dir}/${ID_R1}_spoligo_vsnp3/${ID_R1}_spoligo_vSNP3_tmp.tsv | tr " " "_" | awk '{print $1"\t"$25"\t"$26"\t"$27"\t"$28}' > ${dir}/${ID_R1}_spoligo_vsnp3/${ID_R1}_spoligo_vSNP3.tsv
 
-mv ${dir}/${ID}_spoligo_vsnp3/${ID}_vSNP_spoligo.csv ${dir}/
-mv ${dir}/${ID}_spoligo_vsnp3/*log* ${dir}/
-mv ${dir}/${ID}_spoligo_vsnp3/*.pdf ${dir}/
+mv ${dir}/${ID_R1}_spoligo_vsnp3/*_spoligo_vSNP3.tsv ${dir}/
+mv ${dir}/${ID_R1}_spoligo_vsnp3/*log* ${dir}/
+mv ${dir}/${ID_R1}_spoligo_vsnp3/*.pdf ${dir}/
 
-cat ${dir}/${ID}_vSNP_spoligo.csv | awk -v FPAT='([^,]*|"[^"]*")' '{print $1"\t"$25"\t"$26"\t"$27"\t"$28}' > ${dir}/${ID}_vSNP_spoligo.tsv
-rm ${dir}/${ID}_vSNP_spoligo.csv
+#cat ${dir}/${ID}_vSNP_spoligo.csv | awk -v FPAT='([^,]*|"[^"]*")' '{print $1"\t"$25"\t"$26"\t"$27"\t"$28}' > ${dir}/${ID}_vSNP_spoligo.tsv
 
-rm -R ${dir}/${ID}_spoligo_vsnp3/
+#rm ${dir}/${ID_R1}_spoligo_vsnp3/${ID_R1}_spoligo_vSNP3.tsv
+rm -R ${dir}/${ID_R1}_spoligo_vsnp3/
 
      fi
     fi
@@ -69,8 +68,8 @@ mv ${dir}/*_log.txt ${dir}/vSNP3_log
 mkdir -p ${dir}/PDF_reports
 mv ${dir}/*_report.pdf ${dir}/PDF_reports
 
-cat ${dir}/*_spoligo.tsv >> ${dir}/SpoligoPrediction_vSNP3.tsv
-rm ${dir}/*_spoligo.tsv
+cat ${dir}/*_spoligo_vSNP3.tsv >> ${dir}/vSNP3_Spoligo_Prediction.tsv
+rm ${dir}/*_spoligo_vSNP3.tsv
 
 # -----------------------------------------------------------------
 # Mover los directorios y archivo de resultados al directorio final
@@ -78,12 +77,12 @@ rm ${dir}/*_spoligo.tsv
 
 cd ${dir}
 
-	if [[ -f ./SpoligoPrediction_vSNP3.tsv ]]; then
+	if [[ -f ./vSNP3_Spoligo_Prediction.tsv ]]; then
 	if [[ -d ./PDF_reports ]]; then
 	if [[ -d ./vSNP3_log ]]; then
 mkdir -p /home/admcenasa/Analisis_corridas/Resultados_all_bacteria/vSNP3
 
-mv ./SpoligoPrediction_vSNP3.tsv /home/admcenasa/Analisis_corridas/Resultados_all_bacteria/vSNP3
+mv ./vSNP3_Spoligo_Prediction.tsv /home/admcenasa/Analisis_corridas/Resultados_all_bacteria/vSNP3
 mv ./PDF_reports /home/admcenasa/Analisis_corridas/Resultados_all_bacteria/vSNP3
 mv ./vSNP3_log /home/admcenasa/Analisis_corridas/Resultados_all_bacteria/vSNP3
 
