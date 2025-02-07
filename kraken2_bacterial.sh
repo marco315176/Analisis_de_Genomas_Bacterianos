@@ -27,7 +27,7 @@ kraken2 --paired ${R1} ${R2} --gzip-compressed --db $K2_DB_PATH --use-names --th
 # Filtra los resultados si en la columna 4 del reporte .txt tiene caracteres G o S (genero o especie) y la columna 3 (fragmentos asignados al taxón) tiene un valor mayor a 1
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-awk '$4 ~ "[DGS]" && $1 >= 0.01' /home/admcenasa/Analisis_corridas/kraken2/bacteria/${ID}_kraken2_temp.txt > //home/admcenasa/Analisis_corridas/kraken2/bacteria/${ID}_kraken_species.txt
+awk '$4 ~ "[S]" && $1 >= 0.01' /home/admcenasa/Analisis_corridas/kraken2/bacteria/${ID}_kraken2_temp.txt > //home/admcenasa/Analisis_corridas/kraken2/bacteria/${ID}_kraken_species.txt
 
 # -----------------------------------------
 # Añadir títulos de columna al reporte .txt

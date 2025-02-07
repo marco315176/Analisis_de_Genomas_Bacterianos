@@ -7,10 +7,10 @@
 # Regenerate the BLAST database: ./mlst-make_blast_db
 # Check schemes are installed: ../bin/mlst --list
 
-echo -e "###########################################################################" "\n"
-echo -e   ===== Ejecutar mlst sobre todos los ensambles obtenidos con SPAdes ===== "\n"
-echo -e                          ===== Inicio: $(date) ===== "\n"
-echo -e "############################################################################" "\n"
+echo -e "#######################################################################" "\n"
+echo -e  ===== Determinación del MLST de los ensambles obtenidos con MLST ===== "\n"
+echo -e "\t"                     ===== Inicio: $(date) ===== "\n"
+echo -e "#######################################################################" "\n"
 
 cd /home/admcenasa/Analisis_corridas/SPAdes/bacteria
 
@@ -36,3 +36,8 @@ echo -e "\n$(cat ${MLST})"
 done >> ./MLST_assembly_results_all.tsv
 
 rm ./*_mlst_*
+
+echo -e "#################################################################################" "\n"
+echo -e  =============== Determinación del MLST sobre ensambles terminada  =============== "\n"
+echo -e  "\t" =============== $(date) ============== "\n"
+echo -e "##################################################################################"

@@ -4,7 +4,7 @@ echo -e "#######################################################################
 
 echo -e ========== Iniciando espoligotipificación en lecturas de M.Bovis con vSNP3 ========== "\n"
 
-echo -e "\t" =============== Fin: $(date) ===============  "\n"
+echo -e "\t" =============== Inicio: $(date) ===============  "\n"
 
 echo -e "######################################################################################"
 
@@ -62,14 +62,20 @@ done
 
 dir="/home/admcenasa/Analisis_corridas/vSNP3"
 
-mkdir -p ${dir}/vSNP3_log
-mv ${dir}/*_log.txt ${dir}/vSNP3_log
+if compgen -G "${dir}/*_log.txt" > /dev/null; then
+    mkdir -p "${dir}/vSNP3_log"
+    mv "${dir}"/*_log.txt "${dir}/vSNP3_log"
+	fi
 
-mkdir -p ${dir}/PDF_reports
-mv ${dir}/*_report.pdf ${dir}/PDF_reports
+if compgen -G "${dir}/*_report.pdf" > /dev/null; then
+    mkdir -p "${dir}/PDF_reports"
+    mv "${dir}"/*_report.pdf "${dir}/PDF_reports"
+	fi
 
-cat ${dir}/*_spoligo_vSNP3.tsv >> ${dir}/vSNP3_Spoligo_Prediction.tsv
-rm ${dir}/*_spoligo_vSNP3.tsv
+if compgen -G "${dir}/*_spoligo_vSNP3.tsv" > /dev/null; then
+    cat "${dir}"/*_spoligo_vSNP3.tsv >> "${dir}/vSNP3_Spoligo_Prediction.tsv"
+    rm "${dir}"/*_spoligo_vSNP3.tsv
+	fi
 
 # -----------------------------------------------------------------
 # Mover los directorios y archivo de resultados al directorio final

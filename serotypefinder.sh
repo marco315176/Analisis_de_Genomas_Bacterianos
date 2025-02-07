@@ -1,16 +1,16 @@
 #!/bin/bash
 
-echo -e "#####################################################################################################" "\n"
+echo -e "###############################################################################################################" "\n"
 
-echo -e =====  Ejecutando SerotypeFinder sobre ensambles para la ideantificación de serotipos de E. coli ===== "\n"
+echo -e =====  Ejecutando SerotypeFinder sobre ensambles para la ideantificación de formula antigénica de E. coli ===== "\n"
 
 echo -e                                      ===== Inicio: $(date) ===== "\n"
 
-echo -e "#####################################################################################################" "\n"
+echo -e "###############################################################################################################" "\n"
 
-cd /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial
+cd /home/admcenasa/Analisis_corridas/SPAdes/bacteria
 
-for file in /home/secuenciacion_cenasa/Analisis_corridas/kmerfinder/bacteria/*.spa; do
+for file in /home/admcenasa/Analisis_corridas/kmerfinder/bacteria/*.spa; do
     gene=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2' | tr ' ' '_')
     organism=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2,3' | tr ' ' '_')
     ID_org=$(basename ${file} | cut -d '_' -f '1')
@@ -37,7 +37,7 @@ echo -e "########################################" "\n"
 # Correr SerotypeFinder sobre los ensambles de E. coli obtenidos con SPAdes
 # -------------------------------------------------------------------------
 
-dir="/home/secuenciacion_cenasa/Analisis_corridas/serotypefinder"
+dir="/home/admcenasa/Analisis_corridas/serotypefinder"
 
 mkdir -p ${dir}/${ID}_tmp_SFout
 
@@ -80,14 +80,14 @@ done
 # Crear carpeta de resultados finales en caso de que el archivo SF_results_all.tsv exista
 # ---------------------------------------------------------------------------------------
 
-cd /home/secuenciacion_cenasa/Analisis_corridas/serotypefinder
+cd /home/admcenasa/Analisis_corridas/serotypefinder
 
 if [[ -f ./SF_results_all.tsv ]]; then
-mkdir -p /home/secuenciacion_cenasa/Analisis_corridas/Resultados_all_bacteria/SerotypeFinder
+mkdir -p /home/admcenasa/Analisis_corridas/Resultados_all_bacteria/SerotypeFinder
 
 rm -R ./*tmp*
 
-mv ./SF_results_all.tsv /home/secuenciacion_cenasa/Analisis_corridas/Resultados_all_bacteria/SerotypeFinder/
+mv ./SF_results_all.tsv /home/admcenasa/Analisis_corridas/Resultados_all_bacteria/SerotypeFinder/
 
 	fi
 

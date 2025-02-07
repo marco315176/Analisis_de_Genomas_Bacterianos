@@ -1,13 +1,9 @@
 #!/bin/bash
 
-
-echo -e "###############################################################################################" "\n"
-
-echo -e ============= Estadísticos de lecturas de archivos fastQ.gz de corridas bacterianas ================ "\n"
-
-echo -e                              ===== Inicio: $(date) ===== "\n"
-
-echo -e "###############################################################################################" "\n"
+echo -e "#############################################################################################" "\n"
+echo -e  ============= Analizando estadísticos de lecturas crudas de corrida de bacterias ================ "\n"
+echo -e  "\t"                            ===== Inicio: $(date) ===== "\n"
+echo -e "#############################################################################################" "\n"
 
 cd /home/admcenasa/Analisis_corridas/Corrida_bacterias
 
@@ -24,51 +20,59 @@ cd /home/admcenasa/Analisis_corridas/fastQC/bacteria
 # Ejecuta multiqc sobre los reportes .HTML generados por fastQC para generar un reporte en conjunto
 # -------------------------------------------------------------------------------------------------
 
-multiqc . -o ./multiqc 
+multiqc . -o ./multiqc
 
 mv ./multiqc/multiqc_report.html ./multiqc/pretrimm_multiqc_report.html
 
 
+echo -e "####################################################################################################" "\n"
+echo -e  =============== Iniciando Trimming de lecturas de genoma bacteriano con Trimmomatic  =============== "\n"
+echo -e  "\t" =============== Inicio: $(date) =============== "\n"
+echo -e "####################################################################################################" "\n"
+
 cd /home/admcenasa/Analisis_corridas/Corrida_bacterias
 
-# ---------------------------------------------------------------------------------------------------
-# Ejecuta Trim_Galore para realizar el proceso de trimming sobre lecturas y ejecuta fastqc postrimming
-# ---------------------------------------------------------------------------------------------------
+Trimmomatic="java -jar /home/admcenasa/Programas_bioinformaticos/Trimmomatic-0.39/trimmomatic-0.39.jar"
+NexteraPE="/home/admcenasa/Programas_bioinformaticos/Trimmomatic-0.39/adapters/NexteraPE-PE.fa"
+dir="/home/admcenasa/Analisis_corridas/Archivos_postrim/bacteria"
+mkdir -p /home/admcenasa/Analisis_corridas/Archivos_postrim/bacteria/U1U2
 
-trim_galore --quality 30 --length 70 --paired  -j 7 *.gz --fastqc_args "--extract --outdir /home/admcenasa/Analisis_corridas/fastQC_ptrim/bacteria" --output_dir /home/admcenasa/Analisis_corridas/Archivos_postrim/bacteria
+for R1 in *_R1_*; do
+    R2=${R1/_R1_/_R2_}
+    ID=$(basename ${R1} | cut -d '_' -f '1')
+    ID2=$(basename ${R2} | cut -d '_' -f '1')
+
+${Trimmomatic} PE -threads 6 -phred33 ${R1} ${R2} \
+${dir}/${ID}_R1_trimm.fastq.gz ${dir}/U1U2/${ID}_U1_trimm.fastq.gz \
+${dir}/${ID2}_R2_trimm.fastq.gz ${dir}/U1U2/${ID2}_U2_trimm.fastq.gz \
+ILLUMINACLIP:${NexteraPE}:2:30:10 SLIDINGWINDOW:4:25 MINLEN:70
+
+done
+
+rm /home/admcenasa/Analisis_corridas/Archivos_postrim/bacteria/U1U2/*gz
+
+echo -e "##################################################################################################" "\n"
+echo -e  ============= Analizando estadísticos de lecturas limpias de corrida de bacterias ================ "\n"
+echo -e  "\t"                            ===== Inicio: $(date) ===== "\n"
+echo -e "##################################################################################################" "\n"
 
 cd /home/admcenasa/Analisis_corridas/Archivos_postrim/bacteria
 
-mkdir -p reports_txt
+# ------------------------------------------------------------------------
+# Ejecuta fastQC sobre las lecturas en el directorio que terminen con .gz
+# ------------------------------------------------------------------------
 
-mv  *.txt ./reports_txt
-
-chmod -R 775 *.gz
-
-for R1 in *_R1_*; do 
-    R2=${R1/_R1_*val_1.fq.gz/_R2_*val_2.fq.gz}
-    nameR1="$(basename ${R1} | cut -d '_' -f '1')"
-    nameR2="$(basename ${R2} | cut -d '_' -f '1')"
-
-# --------------------------------------------------------------
-# Cámbio de nombre de los archivos trimmiados de salida R1 y R2 
-# --------------------------------------------------------------
-
-mv ${R1}  ${nameR1}_R1_trim.fastq.gz 
-mv ${R2}  ${nameR2}_R2_trim.fastq.gz 
-
-done #Termino del loop iniciado con "for"
-
+fastqc *.gz --extract -o /home/admcenasa/Analisis_corridas/fastQC_ptrim/bacteria
 
 cd /home/admcenasa/Analisis_corridas/fastQC_ptrim/bacteria
 
-# ------------------------------------------------------------------------------------------------------------------------------
-# Ejecutar multiQC sobre los reportes .HTML generados por fastQC para generar un reporte en conjunto de los reportes postrimming
-# ------------------------------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------
+# Ejecuta multiqc sobre los reportes .HTML generados por fastQC para generar un reporte en conjunto
+# -------------------------------------------------------------------------------------------------
 
-multiqc . -o ./multiqc 
+multiqc . -o ./multiqc
 
-mv ./multiqc/multiqc_report.html ./multiqc/postrimm_multiqc_report.html 
+mv ./multiqc/multiqc_report.html ./multiqc/postrimm_multiqc_report.html
 
 # ------------------------------------------------------------
 # Conjuntar estadisticos de lecturas crudas en un solo archivo
@@ -125,3 +129,8 @@ paste ./estadisticos/R1_stat_pt_temp.csv ./estadisticos/R2_stat_pt_temp.csv | se
 
 rm ./estadisticos/*temp*
 rm ./estadisticos/lecturas_pt.csv
+
+echo -e "#####################################################################################" "\n"
+echo -e  =============== Analisis de calidad y limpieza de lecturas completado =============== "\n"
+echo -e  =============== Fin: $(date) =============== "\n"
+echo -e "#####################################################################################" "\n"

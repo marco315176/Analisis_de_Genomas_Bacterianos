@@ -1,12 +1,9 @@
 #!/bin/bash
 
-echo -e "#############################################################" "\n"
-
-echo -e ======= Ensamble de genomas bacterianos con SPAdes ======= "\n"
-
-echo -e                 ===== Inicio: $(date) ===== "\n"
-
-echo -e "##############################################################" "\n"
+echo -e "###################################################################" "\n"
+echo -e ======= Iniciando ensamble de genomas bacterianos con SPAdes ======= "\n"
+echo -e  "\t"               ===== Inicio: $(date) ===== "\n"
+echo -e "###################################################################" "\n"
 
 # -------------------------------------------------------------------
 # Cámbio de directorio a donde se encuentran las lecturas postrimming
@@ -52,6 +49,6 @@ rm /home/admcenasa/Analisis_corridas/SPAdes/bacteria/${ID}-SPAdes-assembly.fasta
 done #término del ciclo iniciado con "for"
 
 
-echo -e "##################################################################"
-echo -e                   ===== Fin: $(date) =====
-echo -e "##################################################################"
+echo -e "##################################################################" "\n"
+echo -e "\t" ===== Ensamble de genomas bacterianos terminado: $(date) ===== "\n"
+echo -e "##################################################################" "\n"

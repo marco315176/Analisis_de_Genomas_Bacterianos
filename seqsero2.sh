@@ -8,9 +8,9 @@ echo -e                                   ===== Inicio: $(date) ===== "\n"
 
 echo -e "##################################################################################################" "\n"
 
-cd /home/secuenciacion_cenasa/Analisis_corridas/SPAdes_bacterial
+cd /home/admcenasa/Analisis_corridas/SPAdes/bacteria
 
-for file in /home/secuenciacion_cenasa/Analisis_corridas/kmerfinder/bacteria/*.spa; do
+for file in /home/admcenasa/Analisis_corridas/kmerfinder/bacteria/*.spa; do
     gene=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2' | tr ' ' '_')
     organism=$(cat ${file} | sed -n '2p' | cut -d ' ' -f '2,3' | tr ' ' '_')
     ID_org=$(basename ${file} | cut -d '_' -f '1')
@@ -25,11 +25,11 @@ for assembly in *.fa; do
 if [[ ${ID} == ${ID_org} ]]; then
         echo -e "If control: ${ID} ${ID_org}"
 if [[ ${gene} != "Salmonella" ]]; then
-        echo -e "${ID} encontrado como ${organism}, no encontrado como Salmonella"
+        echo -e " ---------- ${ID} encontrado como ${organism}, no encontrado como Salmonella ----------"
 continue
 	else
 
-echo -e "${ID} encontrado como ${gene}" "\n"
+echo -e "********** ${ID} encontrado como ${gene} **********" "\n"
 echo -e "###################################"
 echo -e "Corriendo SeqSero2 sobre: ${ID}"
 echo -e "###################################" "\n"
@@ -37,7 +37,7 @@ echo -e "###################################" "\n"
 # ----------------------------------------------------------------------
 # Correr SeqSero2 sobre los ensambles de Salmonella obtenidos con SPAdes
 # ----------------------------------------------------------------------
-dir="/home/secuenciacion_cenasa/Analisis_corridas/seqsero2"
+dir="/home/admcenasa/Analisis_corridas/seqsero2"
 
 SeqSero2_package.py -t 4 \
                     -i ${assembly} \
@@ -49,7 +49,7 @@ SeqSero2_package.py -t 4 \
 # Crear la carpeta SeqSero2_log y mover los archivos .log 
 # -------------------------------------------------------
 
-mkdir -p /home/secuenciacion_cenasa/Analisis_corridas/seqsero2/SeqSero2_log
+mkdir -p /home/admcenasa/Analisis_corridas/seqsero2/SeqSero2_log
 
 mv ${dir}/${ID}_tmp_SeqSero2out/SeqSero_log.txt ${dir}/${ID}_tmp_SeqSero2out/${ID}_SeqSero_log.txt
 mv ${dir}/${ID}_tmp_SeqSero2out/${ID}_SeqSero_log.txt ${dir}/SeqSero2_log/.
@@ -73,11 +73,7 @@ cat ${dir}/${ID}_tmp_filt.tsv >> ${dir}/SeqSero2_tmp_filt.tsv | uniq
     done
 done
 
-# --------------------------------------------------------------------------------------------------------------------------
-# Modificar archivo final y crear la carpeta de resultados finales en caso de que la carpeta log y el archivo SeqSero2_result_filt.tsv existan
-# ---------------------------------------------------------------------------------------------------------------------------
-
-cd /home/secuenciacion_cenasa/Analisis_corridas/seqsero2
+cd /home/admcenasa/Analisis_corridas/seqsero2
 
 if [[ -f ./SeqSero2_tmp_filt.tsv ]]; then
 
@@ -90,10 +86,10 @@ rm -R *tmp*
 
 if [[ -f ./SeqSero2_result_filt.tsv ]]; then
 if [[ -d ./SeqSero2_log ]]; then
-mkdir -p /home/secuenciacion_cenasa/Analisis_corridas/Resultados_all_bacteria/SeqSero2
+mkdir -p /home/admcenasa/Analisis_corridas/Resultados_all_bacteria/SeqSero2
 
-mv ./SeqSero2_result_filt.tsv /home/secuenciacion_cenasa/Analisis_corridas/Resultados_all_bacteria/SeqSero2/
-mv ./SeqSero2_log /home/secuenciacion_cenasa/Analisis_corridas/Resultados_all_bacteria/SeqSero2/
+mv ./SeqSero2_result_filt.tsv /home/admcenasa/Analisis_corridas/Resultados_all_bacteria/SeqSero2/
+mv ./SeqSero2_log /home/admcenasa/Analisis_corridas/Resultados_all_bacteria/SeqSero2/
       fi
     fi
 
