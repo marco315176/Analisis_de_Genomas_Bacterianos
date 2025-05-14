@@ -1,0 +1,12 @@
+docker run --rm -it -v $(pwd):/data staphb/lyveset:1.1.4f set_manage.pl --create CNB2025
+
+docker run --rm -v $(pwd):/data staphb/lyveset:1.1.4f shuffleSplitReads.pl --numcpus 8 -o interleaved *.fastq.gz
+
+sudo mv interleaved/*gz reads/
+
+sudo rmdir interleaved/
+
+docker run -v $(pwd):/data staphb/lyveset:1.1.4f launch_set.pl --numcpus 10 -ref /data/CNB2025/reference/CENASA-MX23-TB01.fa /data/CNB2025/
+
+docker run -v $(pwd):/data staphb/lyveset:1.1.4f launch_set.pl --numcpus 10 -ref /data/Rabies/reference/RAB141-metaSPAdes-assembly-plus.fa /data/Rabies/
+
