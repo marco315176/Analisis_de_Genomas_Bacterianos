@@ -36,7 +36,12 @@ echo -e "#######################################################################
 
 #-----------------------------------------------------------------------------------------------------------------
 
-for especie in  Salmonella Escherichia Campylobacter Enterobacter_cloacae Enterococcus_faecalis Enterococcus_faecium Staphylococcus_aureus; do
+for especie in  Salmonella \
+                Escherichia \
+				Campylobacter \
+				Enterococcus_faecalis \
+				Enterococcus_faecium \
+				Staphylococcus_aureus; do
     genero=$(basename ${especie} | cut -d '_' -f '1')
 echo -e "Genero: ${genero}"
 
