@@ -10,10 +10,10 @@ echo -e "#######################################################################
 #Para descargar un esquema disponible en stringMLST: stringMLST.py --getMLST -P Enterococcus_faecium/Enterococcus_faecium --species Enterococcus faecium
 
 #-------------------------------------------------------------------
-dirfq="/home/bioinfocenasa/Analisis_corridas/Archivos_trimming/bacteria"
-dirkf="/home/bioinfocenasa/Analisis_corridas/kmerfinder/bacteria"
-dirdb="/home/bioinfocenasa/db/mlst_db/old"
-dirout="/home/bioinfocenasa/Analisis_corridas/stringMLST"
+dirfq="$HOME/Analisis_corridas/Archivos_trimming/bacteria"
+dirkf="$HOME/Analisis_corridas/kmerfinder/bacteria"
+dirdb="$HOME/db/mlst_db/old"
+dirout="$HOME/Analisis_corridas/stringMLST"
 #--------------------------------------------------------------------
 
 cd ${dirfq}
